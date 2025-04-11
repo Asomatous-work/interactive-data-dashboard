@@ -66,7 +66,7 @@ export function RecentSales() {
       <div className="space-y-8">
         {sales.map((sale: any, index: number) => (
           <motion.div
-            key={sale.id}
+            key={sale.id || index}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -84,9 +84,11 @@ export function RecentSales() {
                   }}
                 >
                   {sale.customer_name
-                    .split(" ")
-                    .map((n: string) => n[0])
-                    .join("")}
+                    ? sale.customer_name
+                        .split(" ")
+                        .map((n: string) => n[0])
+                        .join("")
+                    : ""}
                 </AvatarFallback>
               </Avatar>
             </motion.div>

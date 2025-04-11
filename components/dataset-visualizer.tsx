@@ -156,6 +156,10 @@ export function DatasetVisualizer({ datasetId }: DatasetVisualizerProps) {
   // Get colors for the dataset
   const dataColors = getDatasetColors(chartData.length)
 
+  // Create unique IDs for the gradients
+  const barGradientId = "barGradient"
+  const lineGradientId = "lineGradient"
+
   return (
     <Card className="col-span-4 overflow-hidden">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
@@ -206,7 +210,7 @@ export function DatasetVisualizer({ datasetId }: DatasetVisualizerProps) {
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={chartData}>
                   <defs>
-                    <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
+                    <linearGradient id={barGradientId} x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor={colors.blue} stopOpacity={0.8} />
                       <stop offset="95%" stopColor={colors.blue} stopOpacity={0.2} />
                     </linearGradient>
@@ -218,7 +222,7 @@ export function DatasetVisualizer({ datasetId }: DatasetVisualizerProps) {
                   <Legend />
                   <Bar
                     dataKey={yAxis}
-                    fill="url(#barGradient)"
+                    fill={`url(#${barGradientId})`}
                     radius={[4, 4, 0, 0]}
                     animationDuration={1500}
                     animationEasing="ease-out"
@@ -228,7 +232,7 @@ export function DatasetVisualizer({ datasetId }: DatasetVisualizerProps) {
                     {chartData.map((entry, index) => (
                       <Cell
                         key={`cell-${index}`}
-                        fill={hoveredIndex === index ? colors.blue : "url(#barGradient)"}
+                        fill={hoveredIndex === index ? colors.blue : `url(#${barGradientId})`}
                         cursor="pointer"
                       />
                     ))}
@@ -240,7 +244,7 @@ export function DatasetVisualizer({ datasetId }: DatasetVisualizerProps) {
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={chartData}>
                   <defs>
-                    <linearGradient id="lineGradient" x1="0" y1="0" x2="0" y2="1">
+                    <linearGradient id={lineGradientId} x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor={colors.purple} stopOpacity={0.8} />
                       <stop offset="95%" stopColor={colors.purple} stopOpacity={0.1} />
                     </linearGradient>

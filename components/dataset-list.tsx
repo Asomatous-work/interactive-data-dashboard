@@ -109,7 +109,7 @@ export function DatasetList({ onSelectDataset }: DatasetListProps) {
 
         return (
           <motion.div
-            key={dataset.id}
+            key={dataset.id || index}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -129,7 +129,7 @@ export function DatasetList({ onSelectDataset }: DatasetListProps) {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle>{dataset.name}</CardTitle>
-                  <Database className={`h-5 w-5 transition-colors duration-300`} style={{ color: cardColor }} />
+                  <Database className="h-5 w-5 transition-colors duration-300" style={{ color: cardColor }} />
                 </div>
                 <CardDescription>{dataset.description || "No description provided"}</CardDescription>
               </CardHeader>

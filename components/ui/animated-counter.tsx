@@ -1,7 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
-import { animate } from "framer-motion"
+import { useEffect, useState } from "react"
 
 interface AnimatedCounterProps {
   from: number
@@ -18,25 +17,28 @@ export function AnimatedCounter({
   formatValue = (value) => value.toFixed(0),
   className,
 }: AnimatedCounterProps) {
-  const nodeRef = useRef<HTMLSpanElement>(null)
   const [value, setValue] = useState(from)
 
   useEffect(() => {
-    const node = nodeRef.current
-    if (!node) return
+    const startTime = Date.now()
+    const endTime = startTime + duration * 1000
 
-    const controls = animate(from, to, {
-      duration,
-      onUpdate: (value) => setValue(value),
-      ease: "easeOut",
-    })
+    const updateValue = () => {
+      const now = Date.now()
+      if (now >= endTime) {
+        setValue(to)
+        return
+      }
 
-    return () => controls.stop()
+      const elapsed = now - startTime
+      const progress = elapsed / (duration * 1000)
+      setValue(from + (to - from) * progress)
+      requestAnimationFrame(updateValue)
+    }
+
+    const animationId = requestAnimationFrame(updateValue)
+    return () => cancelAnimationFrame(animationId)
   }, [from, to, duration])
 
-  return (
-    <span ref={nodeRef} className={className}>
-      {formatValue(value)}
-    </span>
-  )
+  return <span className={className}>{formatValue(value)}</span>
 }

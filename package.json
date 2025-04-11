@@ -60,8 +60,8 @@
     "zod": "^3.24.1",
     "@emotion/is-prop-valid": "latest",
     "@neondatabase/serverless": "latest",
-    "papaparse": "latest",
-    "framer-motion": "latest"
+    "framer-motion": "latest",
+    "papaparse": "latest"
   },
   "devDependencies": {
     "@types/node": "^22",
