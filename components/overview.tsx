@@ -1,9 +1,9 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts"
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"
 
-// Fallback static data in case the API call fails
+// Static fallback data
 const fallbackData = [
   { month: "Jan", total: 10500 },
   { month: "Feb", total: 12000 },
@@ -30,7 +30,12 @@ export function Overview() {
         if (response.ok) {
           const revenueData = await response.json()
           if (revenueData && revenueData.length > 0) {
-            setData(revenueData)
+            // Ensure data is properly formatted
+            const formattedData = revenueData.map((item) => ({
+              month: item.month,
+              total: typeof item.total === "string" ? Number.parseFloat(item.total) : item.total,
+            }))
+            setData(formattedData)
           }
         }
       } catch (error) {
@@ -43,26 +48,17 @@ export function Overview() {
     fetchData()
   }, [])
 
-  // Custom tooltip component
-  const CustomTooltip = ({ active, payload, label }) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-white p-2 border shadow rounded">
-          <p className="text-sm font-semibold">{`${label}`}</p>
-          <p className="text-sm">{`Revenue: $${payload[0].value.toLocaleString()}`}</p>
-        </div>
-      )
-    }
-    return null
+  if (loading) {
+    return <div className="h-[350px] flex items-center justify-center">Loading...</div>
   }
 
   return (
     <ResponsiveContainer width="100%" height={350}>
-      <BarChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+      <BarChart data={data}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="month" />
         <YAxis tickFormatter={(value) => `$${value.toLocaleString()}`} />
-        <Tooltip content={<CustomTooltip />} />
+        <Tooltip formatter={(value) => [`$${value.toLocaleString()}`, "Revenue"]} />
         <Legend />
         <Bar dataKey="total" name="Revenue" fill="#3b82f6" />
       </BarChart>

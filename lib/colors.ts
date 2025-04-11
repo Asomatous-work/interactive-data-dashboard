@@ -1,5 +1,3 @@
-import type { JSX } from "react"
-
 // Color palette for data visualization
 export const colors = {
   primary: "hsl(var(--primary))",
@@ -51,14 +49,4 @@ export function getCategoryColor(index: number): string {
 // Generate an array of colors for a dataset
 export function getDatasetColors(count: number): string[] {
   return Array.from({ length: count }, (_, i) => getCategoryColor(i))
-}
-
-// Get a gradient definition for charts
-export function getGradient(color: string, idValue: string): JSX.Element {
-  return (
-    <linearGradient id={idValue} x1="0" y1="0" x2="0" y2="1">
-      <stop offset="5%" stopColor={color} stopOpacity={0.8} />
-      <stop offset="95%" stopColor={color} stopOpacity={0.2} />
-    </linearGradient>
-  )
 }
