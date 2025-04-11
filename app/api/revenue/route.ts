@@ -17,7 +17,14 @@ export async function GET() {
       WHEN month = 'Nov' THEN 11
       WHEN month = 'Dec' THEN 12
     END ASC`
-    return NextResponse.json(revenue)
+
+    // Ensure the data is properly formatted
+    const formattedRevenue = revenue.map((item: any) => ({
+      ...item,
+      total: typeof item.total === "string" ? Number.parseFloat(item.total) : item.total,
+    }))
+
+    return NextResponse.json(formattedRevenue)
   } catch (error) {
     console.error("Error fetching revenue data:", error)
     return NextResponse.json({ error: "Failed to fetch revenue data" }, { status: 500 })

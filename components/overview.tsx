@@ -19,7 +19,15 @@ export function Overview() {
           throw new Error("Failed to fetch revenue data")
         }
         const revenueData = await response.json()
-        setData(revenueData)
+
+        // Ensure data is properly formatted for the chart
+        const formattedData = revenueData.map((item: any) => ({
+          ...item,
+          // Ensure total is a number, not a string
+          total: typeof item.total === "string" ? Number.parseFloat(item.total) : item.total,
+        }))
+
+        setData(formattedData)
       } catch (err) {
         console.error("Error fetching revenue data:", err)
         setError("Failed to load revenue data")
@@ -63,6 +71,19 @@ export function Overview() {
         className="flex justify-center items-center h-[350px] text-dashboard-red"
       >
         {error}
+      </motion.div>
+    )
+  }
+
+  // If no data is available, show a message
+  if (!data || data.length === 0) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="flex justify-center items-center h-[350px] text-muted-foreground"
+      >
+        No revenue data available
       </motion.div>
     )
   }

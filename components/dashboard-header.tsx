@@ -7,6 +7,7 @@ import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { SeedButton } from "@/components/seed-button"
+import { ReseedRevenueButton } from "@/components/reseed-revenue-button"
 import { colors } from "@/lib/colors"
 
 export function DashboardHeader() {
@@ -25,6 +26,7 @@ export function DashboardHeader() {
         </div>
         <div className="flex items-center gap-2">
           <SeedButton />
+          <ReseedRevenueButton />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="icon">

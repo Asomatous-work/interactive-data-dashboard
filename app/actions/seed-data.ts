@@ -31,9 +31,12 @@ export async function seedInitialData() {
       const randomFactor = 0.9 + Math.random() * 0.3 // Between 0.9 and 1.2
       baseRevenue = Math.round(baseRevenue * (1 + 0.05 * randomFactor)) // 5% monthly growth with randomness
 
+      // Ensure we're inserting a number, not a string
+      const revenueValue = Number(baseRevenue)
+
       await sql`
         INSERT INTO revenue (month, year, total) VALUES 
-        (${months[i]}, ${currentYear}, ${baseRevenue})
+        (${months[i]}, ${currentYear}, ${revenueValue})
       `
     }
 
